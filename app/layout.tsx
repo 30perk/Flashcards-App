@@ -1,28 +1,29 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import React from "react";
-import Navbar from "@/components/navbar";
+"use client";
+import { ReactNode } from 'react';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import Navbar from '@/components/navbar';
+import { usePathname } from 'next/navigation';
 
-const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Let's Flash Cards",
-  description: "Flashcards",
-};
+const inter = Inter({ subsets: ['latin'] });
+
+const noNavbarPaths = ['/login', '/register'];  
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  const pathname = usePathname();  
+
+  const showNavbar = !noNavbarPaths.includes(pathname);  
+
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
-        <main className="relative overflow-hidden">
-          {children}
-        </main>
+        {showNavbar && <Navbar />} 
+        {children}
       </body>
     </html>
   );
